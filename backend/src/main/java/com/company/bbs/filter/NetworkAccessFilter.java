@@ -33,9 +33,12 @@ public class NetworkAccessFilter extends OncePerRequestFilter {
         "/auth/wechat",
         "/auth/login",
         "/auth/login-by-password",
+        "/auth/info",
         "/swagger-ui",
         "/swagger-resources",
         "/v3/api-docs",
+        "/api/auth",
+        "/api/posts",
         "/api/admin"
     );
     
