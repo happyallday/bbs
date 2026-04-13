@@ -1,4 +1,4 @@
-import request from '../request'
+import request from './request'
 
 export function getWhiteList(params) {
   return request({
