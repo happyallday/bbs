@@ -28,7 +28,7 @@ public class NetworkAccessFilter extends OncePerRequestFilter {
     @Value("${network.enable-office-ip-check:true}")
     private Boolean enableOfficeIpCheck;
     
-    private static final List<String> WHITELIST_PATHS = Arrays.asList(
+private static final List<String> WHITELIST_PATHS = Arrays.asList(
         "/health",
         "/auth/wechat",
         "/auth/login",
@@ -39,7 +39,9 @@ public class NetworkAccessFilter extends OncePerRequestFilter {
         "/v3/api-docs",
         "/api/auth",
         "/api/posts",
-        "/api/admin"
+        "/api/admin/boards",
+        "/api/admin",
+        "/api/home"
     );
     
     @Value("${network.exterior-access-paths:/home,/public}")
