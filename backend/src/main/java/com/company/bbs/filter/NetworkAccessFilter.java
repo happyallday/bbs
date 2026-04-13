@@ -39,9 +39,11 @@ private static final List<String> WHITELIST_PATHS = Arrays.asList(
         "/v3/api-docs",
         "/api/auth",
         "/api/posts",
+        "/api/boards",
         "/api/admin/boards",
         "/api/admin",
-        "/api/home"
+        "/api/home",
+        "/api/statistics"
     );
     
     @Value("${network.exterior-access-paths:/home,/public}")
