@@ -1,0 +1,12 @@
+.idea/
+*.iml
+.DS_Store
+target/
+dist/
+node_modules/
+*.log
+.env
+.vscode/
+*.swp
+*.swo
+*~

@@ -1,0 +1,28 @@
+{
+  "name": "employee-forum-frontend",
+  "version": "1.0.0",
+  "description": "员工论坛系统前端",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
+  },
+  "dependencies": {
+    "vue": "^3.4.21",
+    "vue-router": "^4.3.0",
+    "pinia": "^2.1.7",
+    "axios": "^1.6.8",
+    "element-plus": "^2.6.3",
+    "@element-plus/icons-vue": "^2.3.1",
+    "echarts": "^5.5.0",
+    "wangeditor": "^5.1.23",
+    "dayjs": "^1.11.10"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.4",
+    "vite": "^5.2.0",
+    "eslint": "^8.57.0",
+    "eslint-plugin-vue": "^9.22.0"
+  }
+}
