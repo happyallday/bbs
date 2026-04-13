@@ -3,6 +3,7 @@ package com.company.bbs.controller;
 import com.company.bbs.dto.LoginRequest;
 import com.company.bbs.dto.LoginResponse;
 import com.company.bbs.dto.ResponseResult;
+import com.company.bbs.dto.UsernamePasswordLoginRequest;
 import com.company.bbs.entity.SysUser;
 import com.company.bbs.service.AuthService;
 import javax.servlet.http.HttpServletRequest;
@@ -48,5 +49,17 @@ public class AuthController {
     @PostMapping("/logout")
     public ResponseResult<Void> logout(HttpServletRequest request) {
         return ResponseResult.<Void>success("退出成功");
+    }
+    
+    @PostMapping("/login-by-password")
+    public ResponseResult<LoginResponse> loginByUsernamePassword(@RequestBody UsernamePasswordLoginRequest request) {
+        try {
+            log.info("用户名密码登录请求: {}", request.getUsername());
+            LoginResponse response = authService.loginByUsernamePassword(request);
+            return ResponseResult.success("登录成功", response);
+        } catch (Exception e) {
+            log.error("登录失败", e);
+            return ResponseResult.error("登录失败: " + e.getMessage());
+        }
     }
 }

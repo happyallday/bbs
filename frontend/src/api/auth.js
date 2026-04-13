@@ -21,3 +21,11 @@ export function logout() {
     method: 'post'
   })
 }
+
+export function loginByPassword(data) {
+  return request({
+    url: '/auth/login-by-password',
+    method: 'post',
+    data
+  })
+}
