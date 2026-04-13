@@ -140,16 +140,16 @@ const handlePasswordLogin = async () => {
       password: passwordForm.password
     })
     
-    if (res.data.code === 200) {
-      localStorage.setItem('token', res.data.data.token)
-      localStorage.setItem('userInfo', JSON.stringify(res.data.data.userInfo))
+    if (res.code === 200) {
+      localStorage.setItem('token', res.data.token)
+      localStorage.setItem('userInfo', JSON.stringify(res.data.userInfo))
       await userStore.fetchUserInfo()
       router.push('/home')
     } else {
-      ElMessage.error(res.data.message || '登录失败')
+      ElMessage.error(res.message || '登录失败')
     }
   } catch (error) {
-    ElMessage.error('登录失败: ' + (error.response?.data?.message || '请检查用户名和密码'))
+    ElMessage.error('登录失败: ' + (error.message || '请检查用户名和密码'))
   } finally {
     loading.value = false
   }
