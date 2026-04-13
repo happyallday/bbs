@@ -38,7 +38,18 @@ request.interceptors.response.use(
   error => {
     console.error('请求错误:', error)
     console.error('错误响应:', error.response)
-    ElMessage.error(error.message || '网络请求失败')
+    
+    if (error.response?.status === 403) {
+      const msg = error.response?.data?.message || '访问被拒绝'
+      ElMessage.error(msg)
+      if (msg.includes('办公网') || msg.includes('企业微信')) {
+        localStorage.removeItem('token')
+        localStorage.removeItem('userInfo')
+        window.location.href = '/auth'
+      }
+    } else {
+      ElMessage.error(error.message || '网络请求失败')
+    }
     return Promise.reject(error)
   }
 )

@@ -97,9 +97,12 @@ const handlePasswordLogin = async () => {
     console.log('登录响应:', res)
     
     if (res.code === 200) {
-      localStorage.setItem('token', res.data.token)
-      localStorage.setItem('userInfo', JSON.stringify(res.data.userInfo))
-      await userStore.getUserInfo()
+      const token = res.data.token
+      const userInfo = res.data.userInfo
+      localStorage.setItem('token', token)
+      localStorage.setItem('userInfo', JSON.stringify(userInfo))
+      userStore.token = token
+      userStore.userInfo = userInfo
       router.push('/home')
     } else {
       ElMessage.error(res.message || '登录失败')
