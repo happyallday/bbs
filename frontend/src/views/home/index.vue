@@ -6,13 +6,15 @@
           <h2>员工论坛系统</h2>
         </div>
         <div class="header-right">
+          <el-button type="primary" size="small" @click="handleCreatePost">发布帖子</el-button>
           <el-dropdown @command="handleCommand">
             <span class="user-info">
-              {{ userStore.userInfo?.realName }} ({{ userStore.userInfo?.department }})
+              {{ userInfo.realName || userInfo.username }}
               <el-icon><arrow-down /></el-icon>
             </span>
             <template #dropdown>
               <el-dropdown-menu>
+                <el-dropdown-item v-if="userInfo.isWhiteList === 1 || userInfo.roleId === 1" command="admin">管理后台</el-dropdown-item>
                 <el-dropdown-item command="profile">个人信息</el-dropdown-item>
                 <el-dropdown-item command="logout" divided>退出登录</el-dropdown-item>
               </el-dropdown-menu>
@@ -53,6 +55,26 @@
         </div>
       </el-main>
     </el-container>
+    
+    <el-dialog v-model="postDialogVisible" title="发布帖子" width="700px">
+      <el-form :model="postForm" label-width="80px">
+        <el-form-item label="板块">
+          <el-select v-model="postForm.boardId" placeholder="选择板块" style="width: 100%">
+            <el-option v-for="board in boards" :key="board.id" :label="board.boardName" :value="board.id" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="标题">
+          <el-input v-model="postForm.title" placeholder="请输入帖子标题" />
+        </el-form-item>
+        <el-form-item label="内容">
+          <el-input v-model="postForm.content" type="textarea" rows="10" placeholder="请输入帖子内容" />
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <el-button @click="postDialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="handleSubmitPost">发布</el-button>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -62,9 +84,13 @@ import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { ArrowDown, ChatLineSquare } from '@element-plus/icons-vue'
+import { getAllBoards } from '@/api/board'
+import { createPost } from '@/api/post'
 
 const router = useRouter()
 const userStore = useUserStore()
+
+const userInfo = reactive(JSON.parse(localStorage.getItem('userInfo') || '{}'))
 
 const stats = reactive({
   postCount: 156,
@@ -72,16 +98,29 @@ const stats = reactive({
   onlineCount: 23
 })
 
-const boards = ref([
-  { id: 1, boardName: '技术交流', description: '技术问题讨论与经验分享', postCount: 45 },
-  { id: 2, boardName: '公告通知', description: '公司公告与通知', postCount: 12 },
-  { id: 3, boardName: '生活吐槽', description: '生活分享与吐槽', postCount: 67 },
-  { id: 4, boardName: '招聘求职', description: '内部招聘与求职', postCount: 32 }
-])
+const boards = ref([])
+
+const postDialogVisible = ref(false)
+const postForm = reactive({
+  boardId: null,
+  title: '',
+  content: ''
+})
+
+const loadBoards = async () => {
+  try {
+    const res = await getAllBoards()
+    boards.value = res.data || []
+  } catch (error) {
+    console.error('加载板块失败')
+  }
+}
 
 const handleCommand = (command) => {
   if (command === 'profile') {
     ElMessage.info('个人信息功能开发中')
+  } else if (command === 'admin') {
+    router.push('/admin')
   } else if (command === 'logout') {
     ElMessageBox.confirm('确定要退出登录吗？', '提示', {
       confirmButtonText: '确定',
@@ -98,7 +137,32 @@ const handleBoardClick = (board) => {
   ElMessage.info(`进入${board.boardName}板块 - 功能开发中`)
 }
 
+const handleCreatePost = () => {
+  if (!userInfo.isWhiteList && userInfo.roleId !== 1) {
+    ElMessage.warning('只有白名单用户才能直接发布帖子，其他用户发布的帖子需要审核')
+  }
+  postForm.boardId = boards.value[0]?.id || null
+  postForm.title = ''
+  postForm.content = ''
+  postDialogVisible.value = true
+}
+
+const handleSubmitPost = async () => {
+  if (!postForm.boardId || !postForm.title || !postForm.content) {
+    ElMessage.warning('请填写完整信息')
+    return
+  }
+  try {
+    await createPost(postForm)
+    ElMessage.success('发布成功')
+    postDialogVisible.value = false
+  } catch (error) {
+    ElMessage.error('发布失败')
+  }
+}
+
 onMounted(() => {
+  loadBoards()
   if (!userStore.isLoggedIn) {
     router.push('/auth')
   }
@@ -125,12 +189,22 @@ onMounted(() => {
   color: #333;
 }
 
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
 .user-info {
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 5px;
   color: #333;
+}
+
+.el-main {
+  padding: 20px;
 }
 
 .welcome-section {
@@ -142,53 +216,51 @@ onMounted(() => {
 }
 
 .welcome-card h3 {
-  margin-top: 0;
-  color: #333;
+  margin-bottom: 10px;
 }
 
 .stats {
   display: flex;
   justify-content: center;
-  gap: 50px;
+  gap: 40px;
   margin-top: 20px;
 }
 
 .boards-section h3 {
   margin-bottom: 20px;
-  color: #333;
 }
 
 .board-card {
   cursor: pointer;
-  transition: transform 0.3s;
-  margin-bottom: 20px;
+  transition: all 0.3s;
 }
 
 .board-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .board-icon {
   text-align: center;
-  color: #409EFF;
+  color: #409eff;
   margin-bottom: 10px;
 }
 
 .board-card h4 {
   margin: 10px 0;
-  color: #333;
+  text-align: center;
 }
 
 .board-card p {
   color: #666;
-  font-size: 12px;
+  font-size: 14px;
+  text-align: center;
   margin-bottom: 10px;
 }
 
 .board-stats {
+  text-align: center;
   color: #999;
   font-size: 12px;
-  text-align: center;
 }
 </style>
