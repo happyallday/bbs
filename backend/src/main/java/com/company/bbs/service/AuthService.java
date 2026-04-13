@@ -98,7 +98,12 @@ public class AuthService {
             throw new RuntimeException("该用户可以使用企业微信或用户名密码登录");
         }
         
-        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+        boolean isBcryptHash = user.getPassword().startsWith("$2a$");
+        boolean passwordMatch = isBcryptHash 
+            ? passwordEncoder.matches(request.getPassword(), user.getPassword())
+            : request.getPassword().equals(user.getPassword());
+        
+        if (!passwordMatch) {
             throw new RuntimeException("用户名或密码错误");
         }
         
