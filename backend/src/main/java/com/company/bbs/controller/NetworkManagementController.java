@@ -8,7 +8,7 @@ import com.company.bbs.entity.SysOfficeNetwork;
 import com.company.bbs.mapper.SysOfficeNetworkMapper;
 import com.company.bbs.service.NetworkAccessService;
 import com.company.bbs.utils.IpAddressUtils;
-import jakarta.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;

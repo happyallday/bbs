@@ -5,7 +5,7 @@ import com.company.bbs.dto.BoardRequest;
 import com.company.bbs.dto.ResponseResult;
 import com.company.bbs.entity.BbsBoard;
 import com.company.bbs.service.BoardManagementService;
-import jakarta.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;

@@ -5,7 +5,7 @@ import com.company.bbs.dto.CreatePostRequest;
 import com.company.bbs.dto.ResponseResult;
 import com.company.bbs.entity.BbsPost;
 import com.company.bbs.service.PostService;
-import jakarta.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
