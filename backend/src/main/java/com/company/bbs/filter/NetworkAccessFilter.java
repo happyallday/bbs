@@ -49,7 +49,7 @@ public class NetworkAccessFilter extends OncePerRequestFilter {
         String requestUri = request.getRequestURI();
         String clientIp = getClientIp(request);
         
-        if (isWhitelistPath(requestUri)) {
+        if (isWhitelistPath(requestUri, clientIp)) {
             log.debug("白名单路径放行: {}", requestUri);
             filterChain.doFilter(request, response);
             return;
@@ -98,8 +98,14 @@ public class NetworkAccessFilter extends OncePerRequestFilter {
         return com.company.bbs.utils.IpAddressUtils.extractClientIp(ip);
     }
     
-    private boolean isWhitelistPath(String requestUri) {
-        return WHITELIST_PATHS.stream().anyMatch(requestUri::startsWith);
+    private boolean isWhitelistPath(String requestUri, String clientIp) {
+        if (WHITELIST_PATHS.stream().anyMatch(requestUri::startsWith)) {
+            return true;
+        }
+        if ("0:0:0:0:0:0:0:1".equals(clientIp) || "127.0.0.1".equals(clientIp) || "localhost".equalsIgnoreCase(clientIp) || "0.0.0.0".equals(clientIp)) {
+            return true;
+        }
+        return false;
     }
     
     private boolean isExteriorAccessPath(String requestUri) {
