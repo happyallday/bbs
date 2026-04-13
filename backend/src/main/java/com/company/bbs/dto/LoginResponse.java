@@ -17,5 +17,6 @@ public class LoginResponse {
         private String department;
         private String position;
         private Integer isWhiteList;
+        private Long roleId;
     }
 }

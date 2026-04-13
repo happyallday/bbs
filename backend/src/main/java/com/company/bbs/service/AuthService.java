@@ -131,6 +131,9 @@ public class AuthService {
         int whiteListCount = sysWhiteListMapper.countByUserIdAndType(user.getId(), 1);
         userInfo.setIsWhiteList(whiteListCount > 0 ? 1 : 0);
         
+        Long roleId = sysUserMapper.getUserRoleId(user.getId());
+        userInfo.setRoleId(roleId);
+        
         response.setUserInfo(userInfo);
         
         log.info("用户名密码登录成功 - 用户名: {}", request.getUsername());

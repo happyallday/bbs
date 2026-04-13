@@ -26,4 +26,7 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
     
     @Insert("INSERT INTO sys_user_role (user_id, role_id, created_time) VALUES (#{userId}, #{roleId}, NOW())")
     void insertUserRole(@Param("userId") Long userId, @Param("roleId") Long roleId);
+    
+    @Select("SELECT role_id FROM sys_user_role WHERE user_id = #{userId} LIMIT 1")
+    Long getUserRoleId(@Param("userId") Long userId);
 }
