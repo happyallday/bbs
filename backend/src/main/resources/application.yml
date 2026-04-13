@@ -71,3 +71,4 @@ network:
     - 10.0.0.0/8
     - 172.16.0.0/12
   enable-office-ip-check: true
+  exterior-access-paths: /home,/public
