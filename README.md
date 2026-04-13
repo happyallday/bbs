@@ -466,17 +466,146 @@ code5/
 
 ### 📋 Phase 5: 审核系统 (Week 6)
 
-**计划内容:**
-- [ ] 异步审核队列
-- [ ] 人工审核工作台
-- [ ] 审核规则引擎
-- [ ] 自动化审核决策
-- [ ] 审核通知推送
+#### ✅ 里程碑 5.1 - 审核日志与流程
+
+**已完成内容:**
+- [x] 审核日志实体类 (BbsAuditLog)
+- [x] 审核日志数据访问层
+- [x] 审核服务核心逻辑
+- [x] 异步审核提交
+- [x] 白名单用户豁免机制
+
+**关键组件:**
+- `BbsAuditLog` - 审核日志实体 (backend/src/main/java/com/company/bbs/entity/BbsAuditLog.java)
+- `BbsAuditLogMapper` - 审核日志数据访问 (backend/src/main/java/com/company/bbs/mapper/BbsAuditLogMapper.java)
+- `AuditService` - 审核服务 (backend/src/main/java/com/company/bbs/service/AuditService.java)
+
+**实体属性:**
+- `content_type`: 内容类型 (post/reply)
+- `content_id`: 内容ID
+- `user_id`: 提交者ID
+- `auditor_id`: 审核人ID
+- `audit_status`: 审核状态 (1:待审核 2:通过 3:驳回)
+- `sensitive_words`: 匹配的敏感词
+- `content_snippet`: 内容摘要
+- `audit_remark`: 审核意见
+
+---
+
+#### ✅ 里程碑 5.2 - 审核服务实现
+
+**已完成内容:**
+- [x] 提交审核功能
+- [x] 审核通过功能
+- [x] 审核驳回功能
+- [x] 白名单用户检查
+- [x] 敏感词自动检测
+- [x] 审核状态更新
+
+**关键方法:**
+- `submitForAudit()` - 提交审核 (异步处理)
+- `approve()` - 审核通过
+- `reject()` - 审核驳回
+- `checkBeforeSubmit()` - 发布前检查
+- `getPendingAudits()` - 获取待审核列表
+- `getAuditHistory()` - 获取审核历史
+- `getStatistics()` - 获取审核统计
 
 **审核流程:**
+```mermaid
+用户发布内容 → 白名单检查 → 敏感词检测 → 决策跳过/提交审核
+     ↓              ↓             ↓              ↓
+  isWhiteList   需要审核?     记录敏感词      异步提交
+     ↓              ↓             ↓              ↓
+  直接发布     否→直接发布    更新审核状态    更新内容状态
+              是→提交审核                   通知审核员
 ```
-用户发布 → 敏感词判断 → 触发审核 → 审核员处理 → 发布/驳回
-```
+
+**白名单机制:**
+- 白名单用户发布内容直接通过，无需审核
+- 自动豁免敏感词检查
+- 提升内容发布效率
+
+---
+
+#### ✅ 里程碑 5.3 - 审核规则引擎
+
+**已完成内容:**
+- [x] 审核检查结果类 (AuditCheckResult)
+- [x] 审核统计信息类 (AuditStatistics)
+- [x] 基于敏感词的审核决策
+- [x] 高风险内容识别
+- [x] 审核建议生成
+
+**规则引擎逻辑:**
+
+| 条件 | 结果 | 建议 |
+|------|------|------|
+| 白名单用户 | 无需审核 | - |
+| 包含敏感词(严重) | 需要审核 | 建议驳回 |
+| 包含敏感词(一般) | 需要审核 | 建议人工审核 |
+| 内容干净 | 无需审核 | - |
+
+**审核统计:**
+- 待审核数量
+- 审核通过数量
+- 审核驳回数量
+- 总提交数量
+
+---
+
+#### ✅ 里程碑 5.4 - 审核管理接口
+
+**已完成内容:**
+- [x] 审核RESTful接口
+- [x] 审核通过/驳回接口
+- [x] 待审核列表查询
+- [x] 审核历史查询
+- [x] 审核统计接口
+- [x] 发布前检查接口
+- [x] 前端API封装
+
+**关键组件:**
+- `AuditController` - 审核控制器 (backend/src/main/java/com/company/bbs/controller/AuditController.java)
+- `audit.js` - 前端API (frontend/src/api/audit.js)
+
+**接口清单:**
+- `GET /api/admin/audit/pending` - 获取待审核列表
+- `GET /api/admin/audit/history` - 获取审核历史
+- `POST /api/admin/audit/approve/{auditLogId}` - 审核通过
+- `POST /api/admin/audit/reject/{auditLogId}` - 审核驳回
+- `GET /api/admin/audit/statistics` - 获取审核统计
+- `POST /api/admin/audit/check` - 发布前审核检查
+
+**通知机制:**
+- 审核结果记录到访问日志
+- 提交者可通过审核历史查看结果
+- 支持记录审核意见反馈
+
+---
+
+## 审核系统架构总结
+
+### 核心特性
+- ✅ 敏感词自动检测与触发审核
+- ✅ 白名单用户豁免机制
+- ✅ 异步审核提交，不阻塞发布流程
+- ✅ 完整的审核日志记录
+- ✅ 审核历史追溯
+- ✅ 审核统计分析
+
+### 技术亮点
+- @Async 异步审核处理
+- 完整的事务管理
+- 智能审核规则引擎
+- 高风险内容自动识别
+- 审核统计实时计算
+
+### 性能优化
+- 异步审核不阻塞用户操作
+- 敏感词复用Phase 4的高效过滤器
+- 数据库索引优化审核查询
+- 分页查询支持大量审核记录
 
 ---
 
@@ -682,5 +811,5 @@ docker-compose up -d
 
 **当前版本**: v1.0.0
 **最后更新**: 2024-04-12
-**开发状态**: Phase 4完成 ✅
-**完成进度**: 4/12 阶段完成 (33.3%)
+**开发状态**: Phase 5完成 ✅
+**完成进度**: 5/12 阶段完成 (41.7%)
