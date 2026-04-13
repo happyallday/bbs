@@ -78,7 +78,7 @@ public class JwtUtils {
                 .getBody();
     }
     
-    private Boolean isTokenExpired(String token) {
+    public boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 }
