@@ -21,7 +21,9 @@ request.interceptors.request.use(
 
 request.interceptors.response.use(
   response => {
+    console.log('响应原始:', response)
     const res = response.data
+    console.log('响应数据:', res)
     if (res.code !== 200) {
       ElMessage.error(res.message || '请求失败')
       if (res.code === 401) {
@@ -34,6 +36,8 @@ request.interceptors.response.use(
     return res
   },
   error => {
+    console.error('请求错误:', error)
+    console.error('错误响应:', error.response)
     ElMessage.error(error.message || '网络请求失败')
     return Promise.reject(error)
   }

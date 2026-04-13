@@ -140,6 +140,8 @@ const handlePasswordLogin = async () => {
       password: passwordForm.password
     })
     
+    console.log('登录响应:', res)
+    
     if (res.code === 200) {
       localStorage.setItem('token', res.data.token)
       localStorage.setItem('userInfo', JSON.stringify(res.data.userInfo))
@@ -149,7 +151,8 @@ const handlePasswordLogin = async () => {
       ElMessage.error(res.message || '登录失败')
     }
   } catch (error) {
-    ElMessage.error('登录失败: ' + (error.message || '请检查用户名和密码'))
+    console.error('登录错误:', error)
+    ElMessage.error('登录失败: ' + (error.message || error.response?.data?.message || '请检查用户名和密码'))
   } finally {
     loading.value = false
   }
