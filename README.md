@@ -115,18 +115,105 @@ code5/
 
 ### 📋 Phase 2: 认证授权系统 (Week 3)
 
-**计划内容:**
-- [ ] Spring Security + JWT配置
-- [ ] 用户登录/登出接口
-- [ ] 企业微信OAuth2授权流程
-- [ ] 用户信息同步服务
-- [ ] Token刷新机制
+#### ✅ 里程碑 2.1 - 基础认证框架
+
+**已完成内容:**
+- [x] JWT工具类 (Token生成与验证)
+- [x] Spring Security配置
+- [x] JWT认证过滤器
+- [x] Redis缓存配置
+- [x] MyBatis Plus配置
+- [x] 跨域配置
 
 **关键组件:**
-- JWT工具类 (Token生成与验证)
-- Spring Security配置类
-- 认证过滤器
-- 企业微信OAuth2客户端
+- `JwtUtils` - JWT Token工具类 (backend/src/main/java/com/company/bbs/utils/JwtUtils.java)
+- `SecurityConfig` - Spring Security安全配置 (backend/src/main/java/com/company/bbs/config/SecurityConfig.java)
+- `JwtAuthenticationFilter` - JWT认证过滤器 (backend/src/main/java/com/company/bbs/config/JwtAuthenticationFilter.java)
+- `RedisConfig` - Redis缓存配置 (backend/src/main/java/com/company/bbs/config/RedisConfig.java)
+- `MybatisPlusConfig` - MyBatis Plus分页配置 (backend/src/main/java/com/company/bbs/config/MybatisPlusConfig.java)
+
+**技术实现:**
+- 使用HS256算法签名JWT
+- Token有效期24小时 (可配置)
+- 支持Token过期验证
+- 请求头携带Token: `Authorization: Bearer {token}`
+
+---
+
+#### ✅ 里程碑 2.2 - 企业微信集成
+
+**已完成内容:**
+- [x] 企业微信配置属性类
+- [x] 企业微信服务类 (WeChatService)
+- [x] Access Token获取与缓存
+- [x] 用户信息获取API
+- [x] 部门信息获取API
+- [x] 用户信息同步机制
+
+**关键组件:**
+- `WeChatProperties` - 企业微信属性配置 (backend/src/main/java/com/company/bbs/wechat/WeChatProperties.java)
+- `WeChatService` - 企业微信服务 (backend/src/main/java/com/company/bbs/wechat/WeChatService.java)
+- `WeChatAccessTokenResponse` - Access Token响应DTO
+- `WeChatUserInfoResponse` - 用户信息响应DTO
+- `WeChatDepartmentResponse` - 部门信息响应DTO
+
+**技术实现:**
+- 企业微信Access Token自动获取并缓存在Redis (有效期7200秒)
+- 通过授权码获取用户基本信息
+- 支持获取用户详细信息 (姓名、部门、职位等)
+- 支持获取部门列表信息
+
+---
+
+#### ✅ 里程碑 2.3 - 用户认证服务
+
+**已完成内容:**
+- [x] 认证服务类 (AuthService)
+- [x] 企业微信登录流程
+- [x] 用户自动创建与角色分配
+- [x] 白名单用户检查
+- [x] 登录/登出接口
+- [x] 用户信息获取接口
+
+**关键组件:**
+- `AuthService` - 认证服务 (backend/src/main/java/com/company/bbs/service/AuthService.java)
+- `AuthController` - 认证控制器 (backend/src/main/java/com/company/bbs/controller/AuthController.java)
+- `SysUserMapper` - 用户数据访问层
+- `SysWhiteListMapper` - 白名单数据访问层
+
+**认证流程:**
+```mermaid
+前端发起登录请求 → 企业微信OAuth2授权 → 获取Access Token → 获取用户信息 → 查询/创建用户 → 生成JWT Token → 返回登录信息
+```
+
+**接口清单:**
+- `POST /api/auth/login` - 用户登录 (企业微信授权)
+- `GET /api/auth/info` - 获取当前用户信息
+- `POST /api/auth/logout` - 用户登出
+
+---
+
+#### ✅ 里程碑 2.4 - 前端认证模块
+
+**已完成内容:**
+- [x] 前端HTTP请求封装 (Axios)
+- [x] Token自动携带机制
+- [x] 用户状态管理 (Pinia)
+- [x] 登录页面 (企业微信授权入口)
+- [x] 首页 (登录状态验证)
+
+**关键组件:**
+- `request.js` - Axios请求封装 (frontend/src/api/request.js)
+- `auth.js` - 认证API (frontend/src/api/auth.js)
+- `user.js` - 用户状态管理 (frontend/src/stores/user.js)
+- `auth/index.vue` - 登录页面 (frontend/src/views/auth/index.vue)
+- `home/index.vue` - 首页 (frontend/src/views/home/index.vue)
+
+**前端功能:**
+- 自动在请求头携带JWT Token
+- Token过期自动跳转登录页
+- 用户信息持久化存储
+- 企业微信授权码自动识别与登录
 
 ---
 
@@ -380,4 +467,5 @@ docker-compose up -d
 
 **当前版本**: v1.0.0
 **最后更新**: 2024-04-12
-**开发状态**: Phase 1进行中
+**开发状态**: Phase 2完成 ✅
+**完成进度**: 2/12 阶段完成 (16.7%)
