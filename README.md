@@ -329,17 +329,138 @@ code5/
 
 ### 📋 Phase 4: 敏感词过滤系统 (Week 5)
 
-**计划内容:**
-- [ ] 敏感词CRUD接口
-- [ ] AC自动机算法实现
-- [ ] 文本内容匹配引擎
-- [ ] 正则表达式支持
-- [ ] 白名单用户豁免机制
+#### ✅ 里程碑 4.1 - AC自动机过滤引擎
 
-**核心技术:**
-- AC自动机数据结构
-- Trie字典树
-- 文本匹配算法
+**已完成内容:**
+- [x] Trie字典树数据结构
+- [x] AC自动机算法实现
+- [x] 失败指针构建
+- [x] 敏感词匹配引擎
+- [x] 启动时自动加载敏感词库
+
+**关键组件:**
+- `ACSensitiveWordFilter` - AC自动机过滤器 (backend/src/main/java/com/company/bbs/audit/ACSensitiveWordFilter.java)
+- `TrieNode` - Trie节点类 (backend/src/main/java/com/company/bbs/audit/TrieNode.java)
+
+**技术实现:**
+- 构建Trie字典树存储敏感词
+- 算法复杂度 O(text + matches)，适合大量关键词匹配
+- 支持同时匹配多个敏感词
+- 自动构建失败指针，避免回溯
+- 启动时自动从数据库加载敏感词
+
+---
+
+#### ✅ 里程碑 4.2 - 正则表达式支持
+
+**已完成内容:**
+- [x] 正则表达式敏感词匹配
+- [x] Pattern缓存机制
+- [x] 不区分大小写匹配
+- [x] 支持复杂正则规则
+
+**关键组件:**
+- `RegexSensitiveWordFilter` - 正则表达式过滤器 (backend/src/main/java/com/company/bbs/audit/RegexSensitiveWordFilter.java)
+
+**技术实现:**
+- 使用Java Pattern进行正则匹配
+- 支持正则元字符：`.*`, `\d+`, `[a-z]` 等
+- 预编译Pattern提升性能
+- 支持多模式同时匹配
+
+---
+
+#### ✅ 里程碑 4.3 - 组合过滤器
+
+**已完成内容:**
+- [x] 组合AC自动机和正则过滤器
+- [x] 匹配结果合并
+- [x] 敏感词替换功能
+- [x] 过滤结果分析
+- [x] 白名单用户判断
+
+**关键组件:**
+- `CompositeSensitiveWordFilter` - 组合过滤器 (backend/src/main/java/com/company/bbs/audit/CompositeSensitiveWordFilter.java)
+- `FilterResult` - 过滤结果类 (backend/src/main/java/com/company/bbs/audit/FilterResult.java)
+- `SensitiveWordFilter` - 过滤器接口 (backend/src/main/java/com/company/bbs/audit/SensitiveWordFilter.java)
+- `SensitiveWordMatchResult` - 匹配结果DTO (backend/src/main/java/com/company/bbs/dto/SensitiveWordMatchResult.java)
+
+**过滤流程:**
+```mermaid
+文本输入 → AC自动机匹配 → 正则表达式匹配 → 合并结果 → 过滤分析 → 返回结果
+          ↓               ↓               ↓           ↓
+        全文关键词      模式匹配        去重合并    是否需要审核
+```
+
+**过滤结果:**
+- **PASS**: 内容干净，无需审核
+- **SENSITIVE_WORD_DETECTED**: 包含敏感词，需要审核
+- **REJECT**: 严重违规，直接拒绝
+
+---
+
+#### ✅ 里程碑 4.4 - 敏感词管理服务
+
+**已完成内容:**
+- [x] 敏感词CRUD服务
+- [x] 分页查询功能
+- [x] 分类管理
+- [x] 批量导入功能
+- [x] 过滤器热加载
+
+**关键组件:**
+- `SensitiveWordService` - 敏感词服务 (backend/src/main/java/com/company/bbs/service/SensitiveWordService.java)
+- `BbsSensitiveWordMapper` - 数据访问层 (backend/src/main/java/com/company/bbs/mapper/BbsSensitiveWordMapper.java)
+- `SensitiveWordRequest` - 请求DTO (backend/src/main/java/com/company/bbs/dto/SensitiveWordRequest.java)
+
+**功能特性:**
+- 支持词汇和正则两种类型
+- 支持敏感词分类
+- 支持严重程度分级 (1-3级)
+- 批量导入敏感词 (Excel/文本)
+- 增删改操作自动刷新过滤器
+
+---
+
+#### ✅ 里程碑 4.5 - 敏感词管理接口
+
+**已完成内容:**
+- [x] 敏感词CRUD RESTful接口
+- [x] 敏感词测试接口
+- [x] 批量导入接口
+- [x] 分类查询接口
+- [x] 统计信息接口
+- [x] 前端API封装
+
+**关键组件:**
+- `SensitiveWordController` - 敏感词控制器 (backend/src/main/java/com/company/bbs/controller/SensitiveWordController.java)
+- `sensitiveWords.js` - 前端API (frontend/src/api/sensitiveWords.js)
+
+**接口清单:**
+- `GET /api/admin/sensitive-words/list` - 分页查询敏感词
+- `GET /api/admin/sensitive-words/categories` - 查询所有分类
+- `GET /api/admin/sensitive-words/{id}` - 查询单个敏感词
+- `POST /api/admin/sensitive-words/add` - 添加敏感词
+- `PUT /api/admin/sensitive-words/update` - 更新敏感词
+- `DELETE /api/admin/sensitive-words/delete/{id}` - 删除敏感词
+- `POST /api/admin/sensitive-words/test` - 测试文本是否包含敏感词
+- `POST /api/admin/sensitive-words/batch-import` - 批量导入敏感词
+- `POST /api/admin/sensitive-words/reload` - 重新加载敏感词过滤器
+- `GET /api/admin/sensitive-words/stats` - 获取统计信息
+
+**敏感词属性:**
+- `word`: 敏感词内容
+- `word_type`: 类型 (1:词汇 2:正则)
+- `category`: 分类
+- `severity`: 严重程度 (1:一般 2:严重 3:禁止)
+- `is_regex`: 是否正则表达式
+- `hit_count`: 命中次数
+- `status`: 状态
+
+**性能指标:**
+- AC自动机匹配: O(n) 复杂度
+- 正则表达式: 预编译缓存
+- 支持百万级敏感词库
 
 ---
 
@@ -561,5 +682,5 @@ docker-compose up -d
 
 **当前版本**: v1.0.0
 **最后更新**: 2024-04-12
-**开发状态**: Phase 3完成 ✅
-**完成进度**: 3/12 阶段完成 (25.0%)
+**开发状态**: Phase 4完成 ✅
+**完成进度**: 4/12 阶段完成 (33.3%)
