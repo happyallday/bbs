@@ -89,10 +89,7 @@ public class PostController {
             return ResponseResult.successMessage("点赞成功");
         } catch (Exception e) {
             log.error("点赞失败", e);
-return ResponseResult.errorMessage("点赞失败: " + e.getMessage());
-        } catch (Exception e) {
-            log.error("取消点赞失败", e);
-            return ResponseResult.errorMessage("取消点赞失败: " + e.getMessage());
+            return ResponseResult.errorMessage("点赞失败: " + e.getMessage());
         }
     }
     
