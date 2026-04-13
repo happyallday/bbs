@@ -61,6 +61,27 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
+  const token = localStorage.getItem('token')
+  const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}')
+  
+  if (to.path === '/auth') {
+    next()
+    return
+  }
+  
+  if (!token) {
+    next('/auth')
+    return
+  }
+  
+  if (to.path.startsWith('/admin')) {
+    if (userInfo.roleId !== 1) {
+      alert('只有管理员才能访问')
+      next('/home')
+      return
+    }
+  }
+  
   next()
 })
 

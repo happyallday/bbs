@@ -35,7 +35,8 @@ public class NetworkAccessFilter extends OncePerRequestFilter {
         "/auth/login-by-password",
         "/swagger-ui",
         "/swagger-resources",
-        "/v3/api-docs"
+        "/v3/api-docs",
+        "/api/admin"
     );
     
     @Value("${network.exterior-access-paths:/home,/public}")
