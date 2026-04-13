@@ -16,7 +16,6 @@
     "element-plus": "^2.6.3",
     "@element-plus/icons-vue": "^2.3.1",
     "echarts": "^5.5.0",
-    "wangeditor": "^5.1.23",
     "dayjs": "^1.11.10"
   },
   "devDependencies": {
