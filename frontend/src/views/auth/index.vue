@@ -99,7 +99,7 @@ const router = useRouter()
 const userStore = useUserStore()
 
 const loading = ref(false)
-const activeTab = ref('wechat')
+const activeTab = ref('password')
 
 const wechatForm = reactive({
   code: '',
@@ -166,6 +166,7 @@ const checkAuthCode = () => {
   if (code) {
     wechatForm.code = code
     wechatForm.state = state
+    activeTab.value = 'wechat'
     handleWeChatLogin()
   }
 }
