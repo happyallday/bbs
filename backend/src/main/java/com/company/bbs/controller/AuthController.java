@@ -48,7 +48,7 @@ public class AuthController {
     
     @PostMapping("/logout")
     public ResponseResult<Void> logout(HttpServletRequest request) {
-        return ResponseResult.<Void>success("退出成功");
+        return ResponseResult.successMessage("退出成功");
     }
     
     @PostMapping("/login-by-password")

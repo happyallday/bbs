@@ -56,10 +56,10 @@ public class SensitiveWordController {
         try {
             Long userId = (Long) httpRequest.getAttribute("userId");
             sensitiveWordService.add(request, userId);
-            return ResponseResult.<Void>success("添加成功");
+            return ResponseResult.successMessage("添加成功");
         } catch (Exception e) {
             log.error("添加敏感词失败", e);
-            return ResponseResult.<Void>error("添加失败: " + e.getMessage());
+            return ResponseResult.errorMessage("添加失败: " + e.getMessage());
         }
     }
     
@@ -69,10 +69,10 @@ public class SensitiveWordController {
         try {
             Long userId = (Long) httpRequest.getAttribute("userId");
             sensitiveWordService.update(request, userId);
-            return ResponseResult.<Void>success("更新成功");
+            return ResponseResult.successMessage("更新成功");
         } catch (Exception e) {
             log.error("更新敏感词失败", e);
-            return ResponseResult.<Void>error("更新失败: " + e.getMessage());
+            return ResponseResult.errorMessage("更新失败: " + e.getMessage());
         }
     }
     
@@ -82,10 +82,10 @@ public class SensitiveWordController {
         try {
             Long userId = (Long) httpRequest.getAttribute("userId");
             sensitiveWordService.delete(id, userId);
-            return ResponseResult.<Void>success("删除成功");
+            return ResponseResult.successMessage("删除成功");
         } catch (Exception e) {
             log.error("删除敏感词失败", e);
-            return ResponseResult.<Void>error("删除失败: " + e.getMessage());
+            return ResponseResult.errorMessage("删除失败: " + e.getMessage());
         }
     }
     
@@ -141,10 +141,10 @@ public class SensitiveWordController {
     public ResponseResult<Void> reload() {
         try {
             sensitiveWordService.reloadFilter();
-            return ResponseResult.<Void>success("重新加载成功");
+            return ResponseResult.successMessage("重新加载成功");
         } catch (Exception e) {
             log.error("重新加载敏感词过滤器失败", e);
-            return ResponseResult.<Void>error("重新加载失败: " + e.getMessage());
+            return ResponseResult.errorMessage("重新加载失败: " + e.getMessage());
         }
     }
     

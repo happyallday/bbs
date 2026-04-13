@@ -146,7 +146,7 @@ public class AuthService {
             user.setPosition(detailInfo.getPosition());
             user.setStatus(1);
             user.setIsWhiteList(0);
-            user.setDepartment(departmentService.getUserId(wechatUserid));
+            user.setDepartment(departmentService.resolveDepartment(wechatUserid));
             
             sysUserMapper.insert(user);
             

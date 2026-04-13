@@ -56,10 +56,10 @@ public class UserManagementController {
         try {
             Long userId = (Long) httpRequest.getAttribute("userId");
             userManagementService.add(request, userId);
-            return ResponseResult.<Void>success("添加成功");
+            return ResponseResult.successMessage("添加成功");
         } catch (Exception e) {
             log.error("添加用户失败", e);
-            return ResponseResult.<Void>error("添加失败: " + e.getMessage());
+            return ResponseResult.errorMessage("添加失败: " + e.getMessage());
         }
     }
     
@@ -69,10 +69,10 @@ public class UserManagementController {
         try {
             Long userId = (Long) httpRequest.getAttribute("userId");
             userManagementService.update(request, userId);
-            return ResponseResult.<Void>success("更新成功");
+            return ResponseResult.successMessage("更新成功");
         } catch (Exception e) {
             log.error("更新用户失败", e);
-            return ResponseResult.<Void>error("更新失败: " + e.getMessage());
+            return ResponseResult.errorMessage("更新失败: " + e.getMessage());
         }
     }
     
@@ -82,10 +82,10 @@ public class UserManagementController {
         try {
             Long userId = (Long) httpRequest.getAttribute("userId");
             userManagementService.delete(id, userId);
-            return ResponseResult.<Void>success("删除成功");
+            return ResponseResult.successMessage("删除成功");
         } catch (Exception e) {
             log.error("删除用户失败", e);
-            return ResponseResult.<Void>error("删除失败: " + e.getMessage());
+            return ResponseResult.errorMessage("删除失败: " + e.getMessage());
         }
     }
     
@@ -95,10 +95,10 @@ public class UserManagementController {
         try {
             Long userId = (Long) httpRequest.getAttribute("userId");
             userManagementService.enable(id, userId);
-            return ResponseResult.<Void>success("启用成功");
+            return ResponseResult.successMessage("启用成功");
         } catch (Exception e) {
             log.error("启用用户失败", e);
-            return ResponseResult.<Void>error("启用失败: " + e.getMessage());
+            return ResponseResult.errorMessage("启用失败: " + e.getMessage());
         }
     }
     
@@ -108,10 +108,10 @@ public class UserManagementController {
         try {
             Long userId = (Long) httpRequest.getAttribute("userId");
             userManagementService.disable(id, userId);
-            return ResponseResult.<Void>success("禁用成功");
+            return ResponseResult.successMessage("禁用成功");
         } catch (Exception e) {
             log.error("禁用用户失败", e);
-            return ResponseResult.<Void>error("禁用失败: " + e.getMessage());
+            return ResponseResult.errorMessage("禁用失败: " + e.getMessage());
         }
     }
     
@@ -123,14 +123,14 @@ public class UserManagementController {
             Long userId = (Long) httpRequest.getAttribute("userId");
             String newPassword = data.get("password");
             if (newPassword == null || newPassword.isEmpty()) {
-                return ResponseResult.<Void>error("新密码不能为空");
+                return ResponseResult.errorMessage("新密码不能为空");
             }
             
             userManagementService.resetPassword(id, newPassword, userId);
-            return ResponseResult.<Void>success("重置密码成功");
+            return ResponseResult.successMessage("重置密码成功");
         } catch (Exception e) {
             log.error("重置密码失败", e);
-            return ResponseResult.<Void>error("重置密码失败: " + e.getMessage());
+            return ResponseResult.errorMessage("重置密码失败: " + e.getMessage());
         }
     }
     
@@ -142,10 +142,10 @@ public class UserManagementController {
             Long operatorId = (Long) httpRequest.getAttribute("userId");
             String reason = data.get("reason");
             userManagementService.addToWhiteList(userId, reason, operatorId);
-            return ResponseResult.<Void>success("添加白名单成功");
+            return ResponseResult.successMessage("添加白名单成功");
         } catch (Exception e) {
             log.error("添加白名单失败", e);
-            return ResponseResult.<Void>error("添加白名单失败: " + e.getMessage());
+            return ResponseResult.errorMessage("添加白名单失败: " + e.getMessage());
         }
     }
     
@@ -155,10 +155,10 @@ public class UserManagementController {
         try {
             Long operatorId = (Long) httpRequest.getAttribute("userId");
             userManagementService.removeFromWhiteList(userId, operatorId);
-            return ResponseResult.<Void>success("移除白名单成功");
+            return ResponseResult.successMessage("移除白名单成功");
         } catch (Exception e) {
             log.error("移除白名单失败", e);
-            return ResponseResult.<Void>error("移除白名单失败: " + e.getMessage());
+            return ResponseResult.errorMessage("移除白名单失败: " + e.getMessage());
         }
     }
 }

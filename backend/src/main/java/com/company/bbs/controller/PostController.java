@@ -86,21 +86,13 @@ public class PostController {
     public ResponseResult<Void> likePost(@PathVariable Long id, HttpServletRequest httpRequest) {
         try {
             postService.incrementLikeCount(id);
-            return ResponseResult.<Void>success("点赞成功");
+            return ResponseResult.successMessage("点赞成功");
         } catch (Exception e) {
             log.error("点赞失败", e);
-            return ResponseResult.<Void>error("点赞失败: " + e.getMessage());
-        }
-    }
-    
-    @PostMapping("/{id}/unlike")
-    public ResponseResult<Void> unlikePost(@PathVariable Long id, HttpServletRequest httpRequest) {
-        try {
-            postService.decrementLikeCount(id);
-            return ResponseResult.<Void>success("取消点赞成功");
+return ResponseResult.errorMessage("点赞失败: " + e.getMessage());
         } catch (Exception e) {
             log.error("取消点赞失败", e);
-            return ResponseResult.<Void>error("取消点赞失败: " + e.getMessage());
+            return ResponseResult.errorMessage("取消点赞失败: " + e.getMessage());
         }
     }
     

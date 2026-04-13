@@ -74,10 +74,10 @@ public class NetworkManagementController {
         try {
             networkAccessService.addOfficeNetwork(network);
             log.info("添加办公网IP白名单: {}, 操作人: {}", request.getIpRange(), userId);
-            return ResponseResult.<Void>success("添加成功");
+            return ResponseResult.successMessage("添加成功");
         } catch (Exception e) {
             log.error("添加办公网IP白名单失败", e);
-            return ResponseResult.<Void>error("添加失败: " + e.getMessage());
+            return ResponseResult.errorMessage("添加失败: " + e.getMessage());
         }
     }
     
@@ -95,10 +95,10 @@ public class NetworkManagementController {
         try {
             networkAccessService.updateOfficeNetwork(network);
             log.info("更新办公网IP白名单: {}", network.getIpRange());
-            return ResponseResult.<Void>success("更新成功");
+            return ResponseResult.successMessage("更新成功");
         } catch (Exception e) {
             log.error("更新办公网IP白名单失败", e);
-            return ResponseResult.<Void>error("更新失败: " + e.getMessage());
+            return ResponseResult.errorMessage("更新失败: " + e.getMessage());
         }
     }
     
@@ -112,10 +112,10 @@ public class NetworkManagementController {
         try {
             networkAccessService.deleteOfficeNetwork(id);
             log.info("删除办公网IP白名单: {}", exists.getIpRange());
-            return ResponseResult.<Void>success("删除成功");
+            return ResponseResult.successMessage("删除成功");
         } catch (Exception e) {
             log.error("删除办公网IP白名单失败", e);
-            return ResponseResult.<Void>error("删除失败: " + e.getMessage());
+            return ResponseResult.errorMessage("删除失败: " + e.getMessage());
         }
     }
     
@@ -131,7 +131,7 @@ public class NetworkManagementController {
         networkAccessService.refreshCache();
         
         log.info("启用办公网IP白名单: {}", network.getIpRange());
-        return ResponseResult.<Void>success("启用成功");
+        return ResponseResult.successMessage("启用成功");
     }
     
     @PostMapping("/disable/{id}")
@@ -146,7 +146,7 @@ public class NetworkManagementController {
         networkAccessService.refreshCache();
         
         log.info("禁用办公网IP白名单: {}", network.getIpRange());
-        return ResponseResult.<Void>success("禁用成功");
+        return ResponseResult.successMessage("禁用成功");
     }
     
     @GetMapping("/test/{ip}")

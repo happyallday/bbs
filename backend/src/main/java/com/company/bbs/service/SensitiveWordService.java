@@ -60,13 +60,13 @@ public class SensitiveWordService {
     }
     
     public List<String> getAllCategories() {
-        return sensitiveWordMapper.selectObjs(
+        List<BbsSensitiveWord> words = sensitiveWordMapper.selectList(
             new LambdaQueryWrapper<BbsSensitiveWord>()
                 .select(BbsSensitiveWord::getCategory)
                 .groupBy(BbsSensitiveWord::getCategory)
-                .eq(BbsSensitiveWord::getStatus, 1),
-            Object::toString
+                .eq(BbsSensitiveWord::getStatus, 1)
         );
+        return words.stream().map(BbsSensitiveWord::getCategory).distinct().toList();
     }
     
     @CacheEvict(value = {"sensitiveWords", "regexSensitiveWords"}, allEntries = true)

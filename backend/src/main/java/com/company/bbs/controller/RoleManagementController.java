@@ -54,10 +54,10 @@ public class RoleManagementController {
         try {
             Long userId = (Long) httpRequest.getAttribute("userId");
             roleManagementService.add(request, userId);
-            return ResponseResult.<Void>success("添加成功");
+            return ResponseResult.successMessage("添加成功");
         } catch (Exception e) {
             log.error("添加角色失败", e);
-            return ResponseResult.<Void>error("添加失败: " + e.getMessage());
+            return ResponseResult.errorMessage("添加失败: " + e.getMessage());
         }
     }
     
@@ -67,10 +67,10 @@ public class RoleManagementController {
         try {
             Long userId = (Long) httpRequest.getAttribute("userId");
             roleManagementService.update(request, userId);
-            return ResponseResult.<Void>success("更新成功");
+            return ResponseResult.successMessage("更新成功");
         } catch (Exception e) {
             log.error("更新角色失败", e);
-            return ResponseResult.<Void>error("更新失败: " + e.getMessage());
+            return ResponseResult.errorMessage("更新失败: " + e.getMessage());
         }
     }
     
@@ -80,10 +80,10 @@ public class RoleManagementController {
         try {
             Long userId = (Long) httpRequest.getAttribute("userId");
             roleManagementService.delete(id, userId);
-            return ResponseResult.<Void>success("删除成功");
+            return ResponseResult.successMessage("删除成功");
         } catch (Exception e) {
             log.error("删除角色失败", e);
-            return ResponseResult.<Void>error("删除失败: " + e.getMessage());
+            return ResponseResult.errorMessage("删除失败: " + e.getMessage());
         }
     }
 }
