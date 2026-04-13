@@ -32,6 +32,7 @@ public class NetworkAccessFilter extends OncePerRequestFilter {
         "/health",
         "/auth/wechat",
         "/auth/login",
+        "/auth/login-by-password",
         "/swagger-ui",
         "/swagger-resources",
         "/v3/api-docs"
