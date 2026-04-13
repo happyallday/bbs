@@ -54,10 +54,10 @@ public class BoardManagementController {
         try {
             Long userId = (Long) httpRequest.getAttribute("userId");
             boardManagementService.add(request, userId);
-            return ResponseResult.success("添加成功");
+            return ResponseResult.<Void>success("添加成功");
         } catch (Exception e) {
             log.error("添加板块失败", e);
-            return ResponseResult.error("添加失败: " + e.getMessage());
+            return ResponseResult.<Void>error("添加失败: " + e.getMessage());
         }
     }
     
@@ -67,10 +67,10 @@ public class BoardManagementController {
         try {
             Long userId = (Long) httpRequest.getAttribute("userId");
             boardManagementService.update(request, userId);
-            return ResponseResult.success("更新成功");
+            return ResponseResult.<Void>success("更新成功");
         } catch (Exception e) {
             log.error("更新板块失败", e);
-            return ResponseResult.error("更新失败: " + e.getMessage());
+            return ResponseResult.<Void>error("更新失败: " + e.getMessage());
         }
     }
     
@@ -80,10 +80,10 @@ public class BoardManagementController {
         try {
             Long userId = (Long) httpRequest.getAttribute("userId");
             boardManagementService.delete(id, userId);
-            return ResponseResult.success("删除成功");
+            return ResponseResult.<Void>success("删除成功");
         } catch (Exception e) {
             log.error("删除板块失败", e);
-            return ResponseResult.error("删除失败: " + e.getMessage());
+            return ResponseResult.<Void>error("删除失败: " + e.getMessage());
         }
     }
     
@@ -93,10 +93,10 @@ public class BoardManagementController {
         try {
             Long userId = (Long) httpRequest.getAttribute("userId");
             boardManagementService.enable(id, userId);
-            return ResponseResult.success("启用成功");
+            return ResponseResult.<Void>success("启用成功");
         } catch (Exception e) {
             log.error("启用板块失败", e);
-            return ResponseResult.error("启用失败: " + e.getMessage());
+            return ResponseResult.<Void>error("启用失败: " + e.getMessage());
         }
     }
     
@@ -106,10 +106,10 @@ public class BoardManagementController {
         try {
             Long userId = (Long) httpRequest.getAttribute("userId");
             boardManagementService.disable(id, userId);
-            return ResponseResult.success("禁用成功");
+            return ResponseResult.<Void>success("禁用成功");
         } catch (Exception e) {
             log.error("禁用板块失败", e);
-            return ResponseResult.error("禁用失败: " + e.getMessage());
+            return ResponseResult.<Void>error("禁用失败: " + e.getMessage());
         }
     }
 }

@@ -50,10 +50,10 @@ public class AuditController {
             Long auditorId = (Long) httpRequest.getAttribute("userId");
             String remark = data != null ? data.get("remark") : "";
             auditService.approve(auditLogId, auditorId, remark);
-            return ResponseResult.success("审核通过");
+            return ResponseResult.<Void>success("审核通过");
         } catch (Exception e) {
             log.error("审核通过失败", e);
-            return ResponseResult.error("审核通过失败: " + e.getMessage());
+            return ResponseResult.<Void>error("审核通过失败: " + e.getMessage());
         }
     }
     
@@ -67,10 +67,10 @@ public class AuditController {
             Long auditorId = (Long) httpRequest.getAttribute("userId");
             String remark = data != null && data.containsKey("remark") ? data.get("remark") : "内容不符合发布要求";
             auditService.reject(auditLogId, auditorId, remark);
-            return ResponseResult.success("审核驳回");
+            return ResponseResult.<Void>success("审核驳回");
         } catch (Exception e) {
             log.error("审核驳回失败", e);
-            return ResponseResult.error("审核驳回失败: " + e.getMessage());
+            return ResponseResult.<Void>error("审核驳回失败: " + e.getMessage());
         }
     }
     

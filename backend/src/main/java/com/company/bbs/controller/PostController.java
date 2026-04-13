@@ -86,10 +86,10 @@ public class PostController {
     public ResponseResult<Void> likePost(@PathVariable Long id, HttpServletRequest httpRequest) {
         try {
             postService.incrementLikeCount(id);
-            return ResponseResult.success("点赞成功");
+            return ResponseResult.<Void>success("点赞成功");
         } catch (Exception e) {
             log.error("点赞失败", e);
-            return ResponseResult.error("点赞失败: " + e.getMessage());
+            return ResponseResult.<Void>error("点赞失败: " + e.getMessage());
         }
     }
     
@@ -97,10 +97,10 @@ public class PostController {
     public ResponseResult<Void> unlikePost(@PathVariable Long id, HttpServletRequest httpRequest) {
         try {
             postService.decrementLikeCount(id);
-            return ResponseResult.success("取消点赞成功");
+            return ResponseResult.<Void>success("取消点赞成功");
         } catch (Exception e) {
             log.error("取消点赞失败", e);
-            return ResponseResult.error("取消点赞失败: " + e.getMessage());
+            return ResponseResult.<Void>error("取消点赞失败: " + e.getMessage());
         }
     }
     

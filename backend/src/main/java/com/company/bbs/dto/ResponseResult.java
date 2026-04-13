@@ -47,4 +47,12 @@ public class ResponseResult<T> {
     public static <T> ResponseResult<T> error(Integer code, String message) {
         return new ResponseResult<>(code, message);
     }
+    
+    public static ResponseResult<Void> successMessage(String message) {
+        return new ResponseResult<>(200, message);
+    }
+    
+    public static ResponseResult<Void> errorMessage(String message) {
+        return new ResponseResult<>(500, message);
+    }
 }
