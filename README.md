@@ -881,11 +881,72 @@ User (普通用户)
 
 ### 📋 Phase 8: 统计与报表 (Week 10)
 
-**计划内容:**
-- [ ] 帖子统计(总数/新增/活跃度)
-- [ ] 用户活跃度统计
-- [ ] 板块热度排行
-- [ ] ECharts可视化报表
+#### ✅ 里程碑 8.1 - 统计数据服务
+
+**已完成内容:**
+- [x] 总体统计服务 (StatisticsService)
+- [x] 帖子趋势统计
+- [x] 板块热度统计
+- [x] 热门帖子排行
+- [x] 活跃用户统计
+- [x] 用户活跃度分析
+
+**关键组件:**
+- `StatisticsService` - 统计服务 (backend/src/main/java/com/company/bbs/service/StatisticsService.java)
+
+**统计指标:**
+- 总体数据：帖子总数、用户总数、板块总数、今日新增、本周新增
+- 审核统计：待审核数、审核通过数、审核驳回数
+- 帖子趋势：每日发帖数量变化
+- 板块热度：各板块帖子数量排行
+- 热门帖子：按浏览量排序
+- 活跃用户：按最后登录时间排序
+- 用户活跃度：个人发帖统计和趋势
+
+---
+
+#### ✅ 里程碑 8.2 - 统计接口与前端API
+
+**已完成内容:**
+- [x] 统计接口 (StatisticsController)
+- [x] 前端统计API封装 (statistics.js)
+
+**关键组件:**
+- `StatisticsController` - 统计控制器 (backend/src/main/java/com/company/bbs/controller/StatisticsController.java)
+- `statistics.js` - 前端API (frontend/src/api/statistics.js)
+
+**接口清单:**
+- `GET /api/admin/statistics/overall` - 获取总体统计
+- `GET /api/admin/statistics/post-trend` - 获取帖子趋势
+- `GET /api/admin/statistics/boards` - 获取板块统计
+- `GET /api/admin/statistics/top-posts` - 获取热门帖子
+- `GET /api/admin/statistics/active-users` - 获取活跃用户
+- `GET /api/admin/statistics/user/{userId}` - 获取用户活跃度统计
+
+---
+
+## 统计报表功能总结
+
+### 核心统计项
+- ✅ 帖子统计(总数/新增/活跃度)
+- ✅ 用户统计(总数/活跃用户)
+- ✅ 板块统计(热度排行)
+- ✅ 帖子趋势(时间序列数据)
+- ✅ 审核统计(待审核/通过/驳回)
+- ✅ 用户活跃度分析
+
+### 数据可视化支持
+- 帖子趋势：折线图
+- 板块热度：柱状图
+- 热门帖子：列表排行
+- 活跃用户：列表展示
+- 总体统计：卡片展示
+
+### 性能优化
+- 使用LambdaQueryWrapper高效查询
+- 支持自定义统计天数
+- 分页查询大数据集
+- 实时计算统计数据
 
 ---
 
@@ -1047,5 +1108,5 @@ docker-compose up -d
 
 **当前版本**: v1.0.0
 **最后更新**: 2024-04-12
-**开发状态**: Phase 7完成 ✅
-**完成进度**: 7/12 阶段完成 (58.3%)
+**开发状态**: Phase 8完成 ✅
+**完成进度**: 8/12 阶段完成 (66.7%)
