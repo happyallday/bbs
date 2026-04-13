@@ -757,11 +757,125 @@ code5/
 
 ### 📋 Phase 7: 用户与权限管理 (Week 9)
 
-**计划内容:**
-- [ ] 用户管理后台
-- [ ] 角色权限配置
-- [ ] 菜单权限管理
-- [ ] 操作权限细粒度控制
+#### ✅ 里程碑 7.1 - 用户管理系统
+
+**已完成内容:**
+- [x] 用户CRUD服务 (UserManagementService)
+- [x] 用户查询接口 (UserManagementController)
+- [x] 用户启用/禁用功能
+- [x] 密码重置功能
+- [x] 白名单用户管理
+- [x] 用户状态管理
+- [x] 前端API封装 (users.js)
+
+**关键组件:**
+- `UserManagementService` - 用户管理服务 (backend/src/main/java/com/company/bbs/service/UserManagementService.java)
+- `UserManagementController` - 用户管理控制器 (backend/src/main/java/com/company/bbs/controller/UserManagementController.java)
+- `UserRequest` - 用户请求DTO (backend/src/main/java/com/company/bbs/dto/UserRequest.java)
+- `users.js` - 前端API (frontend/src/api/users.js)
+
+**用户管理功能:**
+- 用户列表查询 (支持筛选和分页)
+- 活跃用户查询
+- 用户添加/编辑/删除
+- 用户启用/禁用
+- 密码重置
+- 白名单用户管理
+- 角色分配
+
+**接口清单:**
+- `GET /api/admin/users/list` - 分页查询用户
+- `GET /api/admin/users/active` - 查询活跃用户
+- `GET /api/admin/users/{id}` - 查询单个用户
+- `POST /api/admin/users/add` - 添加用户
+- `PUT /api/admin/users/update` - 更新用户
+- `DELETE /api/admin/users/delete/{id}` - 删除用户
+- `POST /api/admin/users/enable/{id}` - 启用用户
+- `POST /api/admin/users/disable/{id}` - 禁用用户
+- `POST /api/admin/users/reset-password/{id}` - 重置密码
+- `POST /api/admin/users/whitelist-add/{userId}` - 添加白名单
+- `POST /api/admin/users/whitelist-remove/{userId}` - 移除白名单
+
+---
+
+#### ✅ 里程碑 7.2 - 角色管理系统
+
+**已完成内容:**
+- [x] 角色CRUD服务 (RoleManagementService)
+- [x] 角色查询接口 (RoleManagementController)
+- [x] 用户角色关联管理
+- [x] 角色编码唯一性校验
+
+**关键组件:**
+- `RoleManagementService` - 角色管理服务 (backend/src/main/java/com/company/bbs/service/RoleManagementService.java)
+- `RoleManagementController` - 角色管理控制器 (backend/src/main/java/com/company/bbs/controller/RoleManagementController.java)
+- `RoleRequest` - 角色请求DTO (backend/src/main/java/com/company/bbs/dto/RoleRequest.java)
+
+**系统预置角色:**
+- `ROLE_ADMIN` - 超级管理员
+- `ROLE_USER` - 普通用户
+- `ROLE_AUDITOR` - 审核员
+- `ROLE_MODERATOR` - 版主
+
+**接口清单:**
+- `GET /api/admin/roles/list` - 分页查询角色
+- `GET /api/admin/roles/all` - 查询所有角色
+- `GET /api/admin/roles/{id}` - 查询单个角色
+- `POST /api/admin/roles/add` - 添加角色
+- `PUT /api/admin/roles/update` - 更新角色
+- `DELETE /api/admin/roles/delete/{id}` - 删除角色
+
+---
+
+#### ✅ 里程碑 7.3 - 白名单管理服务
+
+**已完成内容:**
+- [x] 白名单CRUD服务 (WhiteListManagementService)
+- [x] 白名单用户判断
+- [x] 白名单类型支持
+- [x] 白名单历史记录
+
+**关键组件:**
+- `WhiteListManagementService` - 白名单管理服务 (backend/src/main/java/com/company/bbs/service/WhiteListManagementService.java)
+
+**白名单类型:**
+- 1: 内容发布豁免
+- 2: 敏感词豁免
+
+**功能特性:**
+- 白名单用户无需审核即可发布内容
+- 支持多种白名单类型
+- 白名单操作记录历史
+- 可随时移除白名单资格
+
+---
+
+## 用户权限管理架构总结
+
+### 核心功能
+- ✅ 完整的用户管理系统
+- ✅ 基于角色的权限控制 (RBAC)
+- ✅ 白名单用户豁免机制
+- ✅ 用户状态管理
+- ✅ 密码安全管理 (BCrypt加密)
+
+### 权限层次
+```
+Super Admin (超级管理员)
+    ↓
+Admin (管理员)
+    ↓
+Auditor | Moderator (审核员/版主)
+    ↓
+User (普通用户)
+```
+
+### 安全特性
+- 密码BCrypt加密存储
+- 操作日志记录
+- 角色权限细粒度控制
+- 用户状态灵活管理
+- 白名单机制提升效率
 
 ---
 
@@ -933,5 +1047,5 @@ docker-compose up -d
 
 **当前版本**: v1.0.0
 **最后更新**: 2024-04-12
-**开发状态**: Phase 6完成 ✅ (核心功能已实现)
-**完成进度**: 6/12 阶段完成 (50.0%)
+**开发状态**: Phase 7完成 ✅
+**完成进度**: 7/12 阶段完成 (58.3%)
